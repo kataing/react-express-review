@@ -20,18 +20,41 @@ class List extends Component {
 
   componentDidMount() {
     this.getTodos();
+    this.postTodo('help');
   }
 
   getTodos() {
-
+    axios
+      .get('/api')
+      .then(({ data }) => {
+        this.setState({ todos: data });
+      })
+      .catch((err) => {
+        console.error('We got nothing!')
+      })
   }
 
   postTodo(todo) {
-
+    axios
+      .post('/api', { todo })
+      .then(({ data }) => {
+        this.setState({ todos: data });
+      })
+      .catch((err) => {
+        console.log('We could not post', err);
+      })
   }
 
   deleteTodo(index) {
-
+    axios
+      // .delete('/api', { data: { index } })
+      .delete('/api', { params: { index } })
+      .then(({ data }) => {
+        this.setState({ todos: data });
+      })
+      .catch((err) => {
+        console.log('We could not delete', err);
+      })
   }
 
   handleChange(event) {
